@@ -48,8 +48,7 @@ def select_sheet(book, year, month)
 	end
 end
 
-def insert_hour(sheet, pj, hour) #{{{
-
+def find_row(sheet, pj)
 	cells = sheet.cells
 	### row scan...
 	row_num = 1
@@ -65,8 +64,6 @@ def insert_hour(sheet, pj, hour) #{{{
 			### check Project code...
 			if cell.Value == pj
 				puts "XXXXXXXXX HIT XXXXXXXXXXX"
-				#@target_row = row.Address
-				#puts "TARGET::: " + @target_row
 				@target_row_num = row_num
 				puts "TARGET_ROW::: " + @target_row_num.to_s
 				throw :last
@@ -77,7 +74,17 @@ def insert_hour(sheet, pj, hour) #{{{
 		end
 	}
 
-	#cells.item(target_row, 7).value = hour.to_s
+	return @target_row_num
+
+end
+
+#def insert_hour(sheet, day, pj, hour)
+def insert_hour(sheet, pj, hour)
+
+	@target_row_num = find_row(sheet, pj)
+	#TODO: @target_col_num = find_col(sheet, day)
+
+	cells = sheet.cells
 	puts "CHANGE CELL::: " +  "(" + @target_row_num.to_s + "," + @target_col_num.to_s +  ")"
 	print "before: "
 	pp cells.item(@target_row_num, 7).value
@@ -87,10 +94,10 @@ def insert_hour(sheet, pj, hour) #{{{
 	print "after: "
 	pp cells.item(@target_row_num, 7).value
 	#cells.item(1, 7).value = hour.to_s
-end #}}}
+end
 
 
-class ShowExcel
+class EditExcel
 
 	today_full = Date.today
 	today = today_full.day
