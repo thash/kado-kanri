@@ -38,6 +38,16 @@ class PrivacyUtil
 end
 
 
+def select_sheet(book, year, month)
+	book.WorkSheets.each do |st|
+		yyyymm = year.to_s + month.to_s
+		if st.Name == yyyymm
+			puts "found sheet: " + st.Name
+			return st
+		end
+	end
+end
+
 def insert_hour(sheet, pj, hour) #{{{
 
 	cells = sheet.cells
@@ -50,7 +60,7 @@ def insert_hour(sheet, pj, hour) #{{{
 		### column scan...
 		col_num = 1
 		row.Columns.each do |cell|
-			puts cell.Address
+			print "DEBUG: "; puts cell.Address
 
 			### check Project code...
 			if cell.Value == pj
@@ -98,17 +108,10 @@ class ShowExcel
 	#book = excel.Workbooks.Open(excel.GetOpenFilename)
 	book = excel.Workbooks.Open(path)
 
+	sheet = select_sheet(book, "2011", "04")
 
-	flag = 0
-	book.WorkSheets.each do |sheet|
-		if sheet.Name == "201104"
-			puts sheet.Name
-			puts ""
+	insert_hour(sheet, "E100802T01", 3)
 
-			insert_hour(sheet, "E100802T01", 3)
-
-		end
-	end
 	#book.close(false)
 	#excel.quit
 end
