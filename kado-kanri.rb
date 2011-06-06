@@ -39,10 +39,13 @@ class PrivacyUtil
 end
 
 
-def select_sheet(book, year, month)
+def select_sheet(book, key)
 	book.WorkSheets.each do |st|
-		yyyymm = year.to_s + month.to_s
-		if st.Name == yyyymm
+		#yyyymm = year.to_s + month.to_s # not used 
+	#	puts name 
+		name = key 
+		name = "‹´–{" #overwrite.
+		if st.Name == name #changed
 			puts "found sheet: " + st.Name
 			return st
 		end
@@ -131,7 +134,8 @@ class EditExcel
 
 	s = PrivacyUtil.new(ARGV)
 	res = s.make_hash_from_json
-	path = res["path_test"]
+	path = res["path_test_jp"]
+	name = res["name"]
 	arg_year = res["year"] #TODO: Date.today.year
 	arg_month = res["month"] #TODO: Date.today.month
 	arg_day = res["day"] # arg_day = Date.today.day
@@ -148,7 +152,7 @@ class EditExcel
 	#book = excel.Workbooks.Open(excel.GetOpenFilename)
 	book = excel.Workbooks.Open(path)
 
-	sheet = select_sheet(book, arg_year, arg_month)
+	sheet = select_sheet(book, name)
 
 	insert_hour(sheet, arg_day, arg_pj, arg_hour)
 
